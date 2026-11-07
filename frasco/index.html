@@ -1,0 +1,693 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Razones por las que me encantas</title>
+<meta name="description" content="Un frasco lleno de razones.">
+<meta name="theme-color" content="#17121f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Razones">
+<link rel="apple-touch-icon" href="icono.png">
+<link rel="icon" type="image/png" href="icono.png">
+<meta property="og:title" content="Un frasco con razones para ti, mi bonita">
+<meta property="og:description" content="Toca el frasco.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://fabio2305.github.io/Invitacion/frasco/vista-previa.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+:root { color-scheme: dark; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); background: #17121f; }
+body { margin: 0; font: 14px system-ui, -apple-system, sans-serif; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+html, body { overscroll-behavior: none; }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;1,9..144,300;1,9..144,400&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300&family=Caveat:wght@500;600;700&display=swap">
+<style>
+/* Layout: un frasco de vidrio iluminado en el centro de la misma noche de la invitación y el libro; cada papelito sale y se despliega encima. Tema nocturno fijo, a propósito. */
+:root {
+  --night: #17121f;
+  --night-2: #241b30;
+  --muted: #b9a7b4;
+  --rose: #e8a0a8;
+  --rose-deep: #c96b7b;
+  --glow: rgba(232, 160, 168, 0.16);
+  --paper: #fbf3ee;
+  --ink: #3b2536;
+  --ink-soft: #7a5e6f;
+  --accent: #b8566a;
+  --cork: #b98a5e;
+  --font-display: "Fraunces", "Georgia", serif;
+  --font-body: "Newsreader", "Georgia", serif;
+  --font-hand: "Caveat", "Segoe Script", cursive;
+  color-scheme: dark;
+}
+html, body { height: 100%; }
+#app { height: 100%; height: 100dvh; }
+body {
+  background: var(--night);
+  color: var(--rose);
+  font-family: var(--font-body);
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.stage {
+  position: relative;
+  box-sizing: border-box;
+  height: 100%;
+  min-height: 520px;
+  container-type: size;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  justify-items: center;
+  align-items: center;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: clamp(20px, 5cqh, 56px) clamp(20px, 4cqh, 44px);
+  background:
+    radial-gradient(ellipse 60% 45% at 50% 55%, var(--glow), transparent 70%),
+    radial-gradient(ellipse 120% 80% at 50% 120%, var(--night-2), transparent 60%),
+    var(--night);
+}
+canvas#fx { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 30; }
+
+/* Encabezado */
+.head { display: grid; justify-items: center; text-align: center; gap: .2rem; }
+.head .k { font-size: clamp(.72rem, .45rem + 1.1cqi, 1.05rem); letter-spacing: .3em; text-transform: uppercase; color: var(--muted); }
+.head h1 { margin: 0; font-family: var(--font-hand); font-weight: 600; color: var(--rose); font-size: clamp(2.2rem, 1rem + 6.5cqi, 4.4rem); line-height: 1.05; text-wrap: balance; max-width: 16ch; }
+
+/* Frasco */
+.jar-wrap { position: relative; height: 100%; width: 100%; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+/* "toca el frasco" justo encima de la tapa, con una flechita que apunta al corcho */
+.tap-hint { flex: none; height: 3.4rem; display: grid; justify-items: center; align-content: end; gap: 0; margin-bottom: -4px; pointer-events: none; }
+.tap-hint .tap { font-family: var(--font-hand); font-size: clamp(1.5rem, 1rem + 2.2cqi, 2.2rem); color: var(--rose); line-height: 1; }
+.tap-hint svg { width: 22px; height: 18px; fill: none; stroke: var(--rose); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; opacity: .8; animation: point 1.6s ease-in-out infinite; }
+@keyframes point { 0%,100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
+.jar {
+  height: min(calc(100% - 4.6rem), 680px, 86cqi * 1.3333); aspect-ratio: 300 / 400; flex: none;
+  cursor: pointer; overflow: visible; display: block;
+  transform-origin: 50% 90%;
+  animation: idle 5s ease-in-out infinite;
+}
+@keyframes idle { 0%,100% { transform: rotate(-1deg); } 50% { transform: rotate(1deg); } }
+/* al tocar no aparece ningún borde; solo con teclado se ve un contorno rosa */
+.jar:focus, button:focus, a:focus { outline: none; }
+.jar:focus-visible { outline: 2px solid var(--rose); outline-offset: 8px; border-radius: 24px; }
+.inner-glow { animation: innerglow 3.6s ease-in-out infinite; }
+@keyframes innerglow { 0%,100% { opacity: .55; } 50% { opacity: 1; } }
+.firefly { animation: firefly 4s ease-in-out infinite; }
+@keyframes firefly { 0%,100% { opacity: .15; } 50% { opacity: .9; } }
+
+/* Pie */
+.foot { display: grid; justify-items: center; text-align: center; min-height: 1.6rem; }
+.foot .count { font-size: clamp(.72rem, .5rem + .9cqi, .95rem); letter-spacing: .22em; text-transform: uppercase; color: var(--muted); font-variant-numeric: tabular-nums; }
+.pulse { animation: breathe 2.4s ease-in-out infinite; }
+@keyframes breathe { 0%,100% { opacity: .55; } 50% { opacity: 1; } }
+
+/* Papelito desplegado */
+.overlay {
+  position: fixed; inset: 0; z-index: 20;
+  display: grid; place-items: center;
+  padding-left: max(20px, env(safe-area-inset-left, 0px));
+  padding-right: max(20px, env(safe-area-inset-right, 0px));
+  background: rgba(16, 11, 22, 0);
+  transition: background 500ms ease;
+  container-type: inline-size;
+}
+.overlay.dim { background: rgba(16, 11, 22, .55); }
+.note {
+  position: relative;
+  box-sizing: border-box;
+  width: min(100%, 560px);
+  padding: clamp(38px, 9cqi, 54px) clamp(24px, 7cqi, 44px) clamp(22px, 5cqi, 32px);
+  border-radius: 3px;
+  color: var(--ink);
+  background:
+    repeating-linear-gradient(180deg, transparent 0 33px, rgba(184,86,106,.12) 33px 34px) 0 70px / 100% calc(100% - 110px) no-repeat,
+    radial-gradient(ellipse at 75% 15%, rgba(255,255,255,.75), transparent 60%),
+    var(--paper);
+  box-shadow: 0 24px 60px rgba(0,0,0,.5), 0 2px 0 rgba(0,0,0,.05);
+  display: grid; gap: clamp(14px, 3.5cqi, 22px);
+  transform: rotate(-1.5deg);
+}
+.note::before {
+  /* cinta adhesiva */
+  content: ""; position: absolute; left: 50%; top: -14px; width: 110px; height: 30px;
+  transform: translateX(-50%) rotate(-3deg);
+  background: rgba(232,160,168,.55);
+  box-shadow: 0 1px 2px rgba(0,0,0,.08);
+}
+.note::after {
+  /* marca del doblez */
+  content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(59,37,54,.12) 15%, rgba(59,37,54,.12) 85%, transparent);
+}
+.note .num { font-family: var(--font-display); font-style: italic; font-size: clamp(.9rem, .7rem + 1cqi, 1.1rem); color: var(--accent); }
+.note .reason { margin: 0; font-family: var(--font-hand); font-weight: 600; font-size: clamp(1.9rem, 1.1rem + 4.6cqi, 2.9rem); line-height: 1.15; color: var(--ink); text-wrap: balance; }
+.note .sign { justify-self: end; font-family: var(--font-hand); font-size: clamp(1.2rem, .9rem + 1.6cqi, 1.6rem); color: var(--accent); }
+.note .actions { display: flex; align-items: center; justify-content: space-between; gap: .8rem; padding-top: 6px; border-top: 1px dashed rgba(184,86,106,.3); }
+.nav-btn { width: 44px; height: 44px; flex: none; border-radius: 50%; border: 1px solid rgba(184,86,106,.45); background: transparent; color: var(--accent); font-size: 1.6rem; line-height: 1; cursor: pointer; display: grid; place-items: center; padding: 0 0 3px; }
+.nav-btn:disabled { visibility: hidden; }
+.nav-btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.swipe-tip { position: fixed; left: 0; right: 0; bottom: calc(28px + env(safe-area-inset-bottom, 0px)); text-align: center; font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); opacity: 0; transition: opacity 600ms ease; pointer-events: none; z-index: 21; }
+.overlay.dim .swipe-tip { opacity: .75; }
+.overlay { touch-action: none; }
+.note .of { font-size: .8rem; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.btn {
+  font-family: var(--font-display); font-size: clamp(1rem, .85rem + .8cqi, 1.15rem);
+  padding: .6em 1.4em; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--accent); background: var(--accent); color: #fff7f5;
+  box-shadow: 0 6px 18px rgba(168,72,90,.3);
+  transition: transform 200ms ease;
+}
+.btn:hover, .btn:focus-visible { transform: translateY(-2px); }
+.btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.icon-btn {
+  width: 48px; height: 48px; padding: 0; border-radius: 50%;
+  display: grid; place-items: center; cursor: pointer;
+  background: transparent; border: 1px solid var(--accent); color: var(--accent);
+}
+.icon-btn svg { width: 22px; height: 22px; fill: currentColor; }
+.icon-btn:focus-visible { outline: 1px solid var(--accent); outline-offset: 3px; }
+.end { text-align: center; justify-items: center; }
+.end .reason { font-size: clamp(2rem, 1.1rem + 5cqi, 3.1rem); color: var(--accent); }
+.end p.sub { margin: 0; font-size: clamp(1.05rem, .85rem + 1.2cqi, 1.3rem); color: var(--ink); line-height: 1.5; }
+/* cierre final: la frase introduce y "Porque te quiero" es lo grande */
+.end.final .reason { font-family: var(--font-display); font-weight: 300; font-style: italic; font-size: clamp(1.2rem, .9rem + 1.8cqi, 1.6rem); color: var(--ink); line-height: 1.5; }
+.end.final p.sub { font-family: var(--font-hand); font-weight: 700; color: var(--accent); font-size: clamp(2.6rem, 1.4rem + 7cqi, 4rem); line-height: 1.1; padding: .1em .3em; }
+
+/* Botón y panel con todas las razones */
+.list-btn {
+  position: fixed; z-index: 15;
+  right: max(16px, env(safe-area-inset-right, 0px));
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  width: 48px; height: 48px; border-radius: 50%; padding: 0;
+  display: grid; place-items: center; cursor: pointer;
+  border: 1px solid rgba(232,160,168,.45); background: rgba(23,18,31,.7); color: var(--rose);
+}
+.list-btn svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; }
+.list-btn:focus-visible { outline: 2px solid var(--rose); outline-offset: 3px; }
+.sheet-bg { position: fixed; inset: 0; z-index: 25; background: rgba(16,11,22,.6); display: grid; align-items: end; justify-items: center; }
+.sheet {
+  box-sizing: border-box; width: min(100%, 620px); max-height: 82%; max-height: 82dvh;
+  display: flex; flex-direction: column;
+  border-radius: 18px 18px 0 0; color: var(--ink);
+  background: radial-gradient(ellipse at 80% 0%, rgba(255,255,255,.7), transparent 55%), var(--paper);
+  box-shadow: 0 -20px 50px rgba(0,0,0,.45);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.sheet-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 18px 22px 12px; border-bottom: 1px dashed rgba(184,86,106,.3); }
+.sheet-head h2 { margin: 0; font-family: var(--font-hand); font-weight: 600; font-size: clamp(1.8rem, 1.3rem + 2cqi, 2.4rem); color: var(--accent); line-height: 1; }
+.sheet-close { width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(184,86,106,.4); background: transparent; color: var(--accent); font-size: 1.4rem; line-height: 1; cursor: pointer; display: grid; place-items: center; padding: 0 0 2px; }
+.sheet-close:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.sheet-head { flex: none; }
+.sheet-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; touch-action: pan-y; -webkit-user-select: none; padding: 6px 22px 26px; }
+.sheet-body h3 { margin: 18px 0 6px; font-size: .74rem; letter-spacing: .22em; text-transform: uppercase; font-weight: 400; color: var(--ink-soft); }
+.sheet-body ol { list-style: none; margin: 0; padding: 0; display: grid; }
+.sheet-body li { display: grid; grid-template-columns: 2.4rem 1fr; gap: .5rem; align-items: baseline; padding: 10px 0; border-bottom: 1px solid rgba(184,86,106,.12); }
+.sheet-body li span { font-family: var(--font-display); font-style: italic; color: var(--accent); font-size: .95rem; font-variant-numeric: tabular-nums; }
+.sheet-body li p { margin: 0; font-family: var(--font-hand); font-weight: 600; font-size: clamp(1.35rem, 1.1rem + 1cqi, 1.6rem); line-height: 1.2; color: var(--ink); }
+.sheet-body li.gold span { color: #a8803a; }
+
+@media (prefers-reduced-motion: reduce) {
+  .jar, .inner-glow, .firefly, .pulse, .tap-hint svg { animation: none !important; }
+}
+</style>
+</head>
+<body>
+<div id="app">
+<main class="stage" id="stage">
+  <canvas id="fx"></canvas>
+
+  <header class="head">
+    <span class="k" id="kicker">Un papelito por cada día desde que te conocí</span>
+    <h1 id="jarTitle">razones por las que me encantas</h1>
+  </header>
+
+  <div class="jar-wrap">
+    <div class="tap-hint">
+      <span class="tap pulse" id="tapText">toca el frasco</span>
+      <svg viewBox="0 0 22 18" aria-hidden="true"><path d="M11 2 V15 M5 10 L11 16 L17 10"/></svg>
+    </div>
+    <svg class="jar" id="jar" viewBox="0 0 300 400" role="button" tabindex="0" aria-label="Sacar un papelito del frasco">
+      <defs>
+        <clipPath id="inside"><path d="M112 80 C112 98 66 106 58 140 L58 348 C58 368 74 382 94 382 L206 382 C226 382 242 368 242 348 L242 140 C234 106 188 98 188 80 Z"/></clipPath>
+        <radialGradient id="g-in" cx="50%" cy="70%" r="60%">
+          <stop offset="0" stop-color="#f6c7cf" stop-opacity=".35"/>
+          <stop offset="1" stop-color="#f6c7cf" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="g-glass" x1="0" x2="1">
+          <stop offset="0" stop-color="#ffffff" stop-opacity=".10"/>
+          <stop offset=".5" stop-color="#ffffff" stop-opacity=".03"/>
+          <stop offset="1" stop-color="#ffffff" stop-opacity=".08"/>
+        </linearGradient>
+        <linearGradient id="g-cork" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0" stop-color="#f3c3cb"/>
+          <stop offset="1" stop-color="#d68e9c"/>
+        </linearGradient>
+      </defs>
+
+      <!-- sombra en la mesa -->
+      <ellipse cx="150" cy="390" rx="104" ry="9" fill="#000" opacity=".35"/>
+
+      <!-- interior -->
+      <g clip-path="url(#inside)">
+        <rect class="inner-glow" x="40" y="60" width="220" height="330" fill="url(#g-in)"/>
+        <g id="pile"></g>
+        <circle class="firefly" cx="96" cy="170" r="2.2" fill="#ffe7ec"/>
+        <circle class="firefly" style="animation-delay:-1.3s" cx="196" cy="214" r="1.8" fill="#ffe7ec"/>
+        <circle class="firefly" style="animation-delay:-2.6s" cx="150" cy="150" r="1.6" fill="#ffe7ec"/>
+        <circle class="firefly" style="animation-delay:-.7s" cx="122" cy="246" r="1.4" fill="#ffe7ec"/>
+      </g>
+
+      <!-- vidrio -->
+      <path d="M108 76 C108 96 60 104 52 140 L52 350 C52 372 70 388 92 388 L208 388 C230 388 248 372 248 350 L248 140 C240 104 192 96 192 76 Z" fill="url(#g-glass)" stroke="#f5d9df" stroke-opacity=".55" stroke-width="2.5"/>
+      <path d="M70 150 C70 130 84 118 100 112" fill="none" stroke="#fff" stroke-opacity=".45" stroke-width="4" stroke-linecap="round"/>
+      <path d="M68 172 L68 330" fill="none" stroke="#fff" stroke-opacity=".22" stroke-width="7" stroke-linecap="round"/>
+      <path d="M232 300 L232 340" fill="none" stroke="#fff" stroke-opacity=".18" stroke-width="3" stroke-linecap="round"/>
+      <rect x="98" y="62" width="104" height="18" rx="8" fill="#ffffff" fill-opacity=".08" stroke="#f5d9df" stroke-opacity=".55" stroke-width="2.5"/>
+
+      <!-- corcho -->
+      <g id="cork">
+        <rect x="112" y="22" width="76" height="46" rx="9" fill="url(#g-cork)"/>
+        <g fill="#a9606f" opacity=".45"><circle cx="126" cy="34" r="1.6"/><circle cx="160" cy="30" r="1.3"/><circle cx="174" cy="46" r="1.6"/><circle cx="140" cy="52" r="1.3"/><circle cx="152" cy="42" r="1"/><circle cx="130" cy="58" r="1.2"/></g>
+        <rect x="112" y="22" width="76" height="8" rx="4" fill="#fff" opacity=".15"/>
+      </g>
+
+      <!-- cinta y etiqueta -->
+      <path d="M100 74 C130 84 170 84 200 74" fill="none" stroke="#a63f55" stroke-width="5" stroke-linecap="round"/>
+      <path d="M196 76 C206 86 210 100 206 112" fill="none" stroke="#a63f55" stroke-width="2"/>
+      <g transform="translate(184 108) rotate(10)">
+        <path d="M0 8 L10 0 L58 0 L58 34 L10 34 L0 26 Z" fill="#fbf3ee"/>
+        <circle cx="10" cy="17" r="3" fill="#17121f"/>
+        <text x="35" y="23" text-anchor="middle" font-family="Caveat, cursive" font-weight="700" font-size="15" fill="#b8566a">para ti</text>
+      </g>
+    </svg>
+  </div>
+
+  <footer class="foot" id="foot">
+    <span class="count" id="count"></span>
+  </footer>
+</main>
+
+<button class="list-btn" id="listBtn" type="button" aria-label="Ver todas las razones" title="Ver todas las razones">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r=".8" fill="currentColor"/><circle cx="4.5" cy="12" r=".8" fill="currentColor"/><circle cx="4.5" cy="18" r=".8" fill="currentColor"/></svg>
+</button>
+<div class="sheet-bg" id="sheetBg" hidden>
+  <section class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+    <div class="sheet-head">
+      <h2 id="sheetTitle">Todas mis razones</h2>
+      <button class="sheet-close" id="sheetClose" type="button" aria-label="Cerrar">×</button>
+    </div>
+    <div class="sheet-body" id="sheetBody"></div>
+  </section>
+</div>
+
+<div class="overlay" id="overlay" hidden>
+  <article class="note" id="note">
+    <span class="num" id="num"></span>
+    <p class="reason" id="reason"></p>
+    <span class="sign">— tu bonito</span>
+    <div class="actions">
+      <button class="nav-btn" id="prevNote" type="button" aria-label="Razón anterior">‹</button>
+      <button class="btn" id="nextBtn" type="button">Otra razón</button>
+    </div>
+  </article>
+  <article class="note end" id="endNote" hidden>
+    <p class="reason" id="endTitle">Siempre tendré muchas razones para decir que me encantas, pero ninguna más importante que esta razón:</p>
+    <p class="sub" id="endSub">Porque te quiero.</p>
+    <button class="btn" id="moreBtn" type="button" hidden>Ver las que guardé</button>
+    <button class="icon-btn" id="refill" type="button" aria-label="Volver a llenar el frasco" title="Volver a llenar">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5V2L7.5 6.5 12 11V7.5a5.5 5.5 0 1 1-5.5 5.5H4a8 8 0 1 0 8-8z"/></svg>
+    </button>
+  </article>
+</div>
+</div>
+
+<script>
+// ===== Razones (edita, agrega o quita las que quieras) =====
+// La primera de la lista es la última que sale siempre (cierra el frasco del día).
+// Las siguientes van de la más bonita a la menos; ese día salen tantas como el día del mes,
+// y las demás quedan guardadas para después.
+const REASONS = [
+  "Porque quiero un futuro juntos.",
+  "Porque eres la coincidencia más bonita que me ha pasado.",
+  "Porque sin darme cuenta te robaste mi corazón.",
+  "Porque tu sonrisa es la más hermosa que vi en mi vida.",
+  "Porque no hay otro lugar en el que desee estar más que contigo.",
+  "Porque puedo estar bailando solo contigo y que nada más me importe.",
+  "Porque pienso en ti con cada canción de amor que escucho.",
+  "Porque contigo puedo hablar mil horas sin cansarme.",
+  "Porque no importa el plan, solo quiero que tú estés en él.",
+  "Porque eres mi persona favorita.",
+  "Porque cada día me enamoras más.",
+  "Porque nuestra historia se está volviendo la más bonita de todas.",
+  "Porque quiero llenarte de amor cada día de tu vida.",
+  "Porque amo tu manera de ser.",
+  // --- desde aquí, guardadas (salen si el día del mes es mayor, o con el botón del final) ---
+  "Porque amo tus abrazos.",
+  "Porque siento que contigo quiero todo.",
+  "Porque descubrí que contigo puedo sentir que estoy en un sueño.",
+  "Porque sin pensarlo pasaste a ser parte de mi vida.",
+  "Porque hacer planes contigo es lo más bonito y emocionante.",
+  "Porque puedo soñar contigo sin miedo.",
+  "Porque cuando estoy a tu lado soy muy feliz.",
+  "Porque amo tus besos.",
+  "Porque amo cada momento a tu lado.",
+  "Porque eres mi confidente.",
+  "Porque siempre vienes a mi mente.",
+  "Porque siempre estás en mis pensamientos.",
+  "Porque te volviste una personita muy importante para mí.",
+  "Porque siempre me sacas una sonrisa.",
+  "Porque me haces poner rojito.",
+  "Porque me encanta arriesgarme por ti."
+];
+
+const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const $ = (id) => document.getElementById(id);
+const SVGNS = "http://www.w3.org/2000/svg";
+const PAPER = ["#fbf3ee", "#f6d9dc", "#efd3e2", "#f7e4cc", "#fde9ee"];
+const GOLD = ["#f6e3b8", "#efd49a", "#f9ecc9", "#e9cf9a"];
+
+function anim(el, frames, opts) {
+  if (!el.animate) { return Promise.resolve(); }
+  const a = el.animate(frames, Object.assign({ fill: "forwards", easing: "cubic-bezier(.25,.6,.3,1)" }, opts));
+  return a.finished.catch(() => {});
+}
+const wait = (ms) => new Promise(r => setTimeout(r, ms));
+
+// ===== Un papelito por cada día desde que se conocieron =====
+// Número de papelitos: el día del mes en que ella abre el frasco (el 14 hay 14, el 18 hay 18)
+// Modo de prueba: abre el link con #dia-14 al final para ver el frasco como si fuera el 14 de este mes.
+const TEST_DAY = (location.hash.match(/^#dia-(\d{1,2})$/) || [])[1];
+const DAYS = TEST_DAY ? Math.min(31, Math.max(1, +TEST_DAY)) : new Date().getDate();
+// se usan las primeras razones de la lista (pon tus favoritas arriba); si hay menos razones que días, se usan todas
+const COUNT = Math.min(REASONS.length, DAYS);
+
+// "hoy": las del día (la primera de la lista siempre sale al final); "guardadas": el resto
+const EXTRA = REASONS.length - COUNT;
+let phase = "today", order = [], read = 0, state = "idle";
+// historial de papelitos ya sacados, para poder ir y volver entre ellos
+let history = [], pos = -1;
+const total = () => phase === "today" ? COUNT : EXTRA;
+function shuffle() {
+  const pool = phase === "today" ? REASONS.slice(1, COUNT).map((_, i) => i + 1) : REASONS.slice(COUNT).map((_, i) => i + COUNT);
+  for (let i = pool.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [pool[i], pool[j]] = [pool[j], pool[i]]; }
+  order = phase === "today" ? pool.concat(0) : pool;
+  read = 0;
+  history = []; pos = -1;
+}
+
+// papelitos dentro del frasco, apilados desde el fondo
+let rng = 7;
+const rand = () => { rng = (rng * 9301 + 49297) % 233280; return rng / 233280; };
+function buildPile(dropIn) {
+  const pile = $("pile");
+  pile.innerHTML = "";
+  rng = 7;
+  const n = total();
+  // con muchos papelitos se hacen más pequeños para que todos quepan en el frasco
+  const perRow = n <= 24 ? 4 : n <= 60 ? 6 : 8;
+  const colStep = 168 / perRow, sc = Math.min(1, colStep / 40), rowH = 17 * sc + 1;
+  for (let i = 0; i < n; i++) {
+    const row = Math.floor(i / perRow), col = i % perRow;
+    const x = 72 + col * colStep + (row % 2 ? colStep * .45 : 0) + (rand() * 12 - 6) * sc;
+    const y = 364 - row * rowH - rand() * 5 * sc;
+    const rot = rand() * 70 - 35;
+    const g = document.createElementNS(SVGNS, "g");
+    g.setAttribute("transform", "translate(" + x.toFixed(1) + " " + y.toFixed(1) + ") rotate(" + rot.toFixed(0) + ") scale(" + sc.toFixed(2) + ")");
+    const inner = document.createElementNS(SVGNS, "g");
+    inner.setAttribute("class", "slip");
+    inner.innerHTML =
+      '<rect x="-24" y="-9" width="48" height="18" rx="2.5" fill="' + (phase === "today" ? PAPER[i % PAPER.length] : GOLD[i % GOLD.length]) + '" stroke="#b8566a" stroke-opacity=".25"/>' +
+      '<path d="M0 -9 L0 9" stroke="#b8566a" stroke-opacity=".22" stroke-width="1"/>' +
+      (i % 3 === 0 ? '<path transform="translate(-12 -3) scale(.32)" d="M0 16 C-4 12 -16 8 -16 0 C-16 -6 -10 -10 -5 -10 C-2 -10 0 -8 0 -5 C0 -8 2 -10 5 -10 C10 -10 16 -6 16 0 C16 8 4 12 0 16 Z" fill="#c96b7b"/>' : "");
+    g.appendChild(inner);
+    pile.appendChild(g);
+    if (dropIn && inner.animate) {
+      inner.animate([{ transform: "translate(0px, -300px)", opacity: 0 }, { transform: "translate(0px, 0px)", opacity: 1 }],
+        { duration: 700, delay: i * 70, easing: "cubic-bezier(.3,1.3,.5,1)", fill: "backwards" });
+    }
+  }
+}
+function updateCount() {
+  const left = total() - read;
+  const word = phase === "today" ? "papelito" : "guardada";
+  $("count").textContent = left === 1 ? "queda 1 " + word : left > 0 ? "quedan " + left + " " + word + "s" : "frasco vacío";
+}
+
+
+function jarShake() {
+  const jar = $("jar");
+  jar.style.animation = "none";
+  anim(jar, [{ transform: "rotate(0)" }, { transform: "rotate(-5deg)" }, { transform: "rotate(4deg)" }, { transform: "rotate(-2deg)" }, { transform: "rotate(0)" }], { duration: REDUCED ? 1 : 520, fill: "none", easing: "ease-in-out" });
+  anim($("cork"), [{ transform: "translate(0,0) rotate(0)" }, { transform: "translate(-6px,-34px) rotate(-14deg)", offset: .45 }, { transform: "translate(0,0) rotate(0)" }], { duration: REDUCED ? 1 : 900, fill: "none", easing: "cubic-bezier(.3,.7,.3,1)" });
+}
+function takeSlip() {
+  // saca el siguiente papelito del frasco y lo agrega al historial
+  const slips = $("pile").querySelectorAll(".slip");
+  const slip = slips[slips.length - 1 - read];
+  const p = slip ? anim(slip, [{ transform: "translate(0,0)", opacity: 1 }, { transform: "translate(0,-280px) rotate(30deg)", opacity: 0 }], { duration: REDUCED ? 1 : 420, easing: "ease-in" }) : Promise.resolve();
+  history.push(order[read]);
+  read++;
+  updateCount();
+  return p;
+}
+function fillNote() {
+  // las guardadas siguen la numeración de las del día (si hoy hubo 14, la primera guardada es la 15)
+  $("num").textContent = "Razón n.º " + (phase === "today" ? pos + 1 : COUNT + pos + 1);
+  $("reason").textContent = REASONS[history[pos]];
+  const atEnd = pos === history.length - 1;
+  $("nextBtn").textContent = atEnd && read >= total() ? "Terminar" : atEnd ? "Otra razón" : "Siguiente";
+  $("prevNote").disabled = pos <= 0;
+}
+
+// primer papelito: sale volando del frasco y se despliega
+async function draw() {
+  if (state !== "idle") return;
+  if (read >= total() && !history.length) { showEnd(); return; }
+  state = "busy";
+  if (read < total()) { jarShake(); await takeSlip(); }
+  pos = history.length - 1;
+  fillNote();
+  await showNote($("note"));
+  state = "reading";
+}
+
+// cambiar de papelito dentro de la tarjeta, rápido y deslizando
+async function slideTo(newPos, dir) {
+  const note = $("note");
+  await anim(note, REDUCED ? [{ opacity: 1 }, { opacity: 0 }] : [
+    { opacity: 1, transform: "translateX(0) rotate(-1.5deg)" },
+    { opacity: 0, transform: "translateX(" + (dir > 0 ? -60 : 60) + "%) rotate(" + (dir > 0 ? -10 : 8) + "deg)" }
+  ], { duration: 260, easing: "ease-in" });
+  pos = newPos;
+  fillNote();
+  await anim(note, REDUCED ? [{ opacity: 0 }, { opacity: 1 }] : [
+    { opacity: 0, transform: "translateX(" + (dir > 0 ? 50 : -50) + "%) rotate(" + (dir > 0 ? 6 : -8) + "deg) scale(.96)" },
+    { opacity: 1, transform: "translateX(0) rotate(-1.5deg) scale(1)" }
+  ], { duration: 420, easing: "cubic-bezier(.2,.8,.3,1)" });
+}
+async function goNext() {
+  if (state !== "reading") return;
+  if (pos < history.length - 1) { state = "busy"; await slideTo(pos + 1, 1); state = "reading"; return; }
+  if (read >= total()) { close(); return; }
+  state = "busy";
+  jarShake();
+  takeSlip();
+  await slideTo(history.length - 1, 1);
+  state = "reading";
+}
+async function goPrev() {
+  if (state !== "reading" || pos <= 0) return;
+  state = "busy";
+  await slideTo(pos - 1, -1);
+  state = "reading";
+}
+
+async function showNote(note) {
+  const ov = $("overlay");
+  ov.hidden = false;
+  $("note").hidden = note !== $("note");
+  $("endNote").hidden = note !== $("endNote");
+  requestAnimationFrame(() => ov.classList.add("dim"));
+  // vuela desde la boca del frasco, doblado, y se despliega
+  const corkR = $("cork").getBoundingClientRect();
+  const nr = note.getBoundingClientRect();
+  const dx = corkR.left + corkR.width / 2 - (nr.left + nr.width / 2);
+  const dy = corkR.top + corkR.height / 2 - (nr.top + nr.height / 2);
+  const frames = REDUCED
+    ? [{ opacity: 0 }, { opacity: 1 }]
+    : [
+        { opacity: 0, transform: "translate(" + dx + "px," + dy + "px) scale(.18,.05) rotate(-24deg)" },
+        { opacity: 1, transform: "translate(0px,-10px) scale(1,.07) rotate(-8deg)", offset: .5 },
+        { opacity: 1, transform: "translate(0px,0px) scale(1,1.03) rotate(-2deg)", offset: .85 },
+        { opacity: 1, transform: "translate(0px,0px) scale(1,1) rotate(-1.5deg)" }
+      ];
+  const kids = [...note.children];
+  kids.forEach(k => k.style.opacity = 0);
+  await anim(note, frames, { duration: REDUCED ? 300 : 950, easing: "cubic-bezier(.3,.7,.3,1)" });
+  for (const k of kids) { anim(k, REDUCED ? [{ opacity: 0 }, { opacity: 1 }] : [{ opacity: 0, transform: "translateY(6px)" }, { opacity: 1, transform: "translateY(0)" }], { duration: 600 }); await wait(110); }
+  kids.forEach(k => k.style.opacity = "");
+}
+
+async function hideNote() {
+  const ov = $("overlay");
+  const note = $("note").hidden ? $("endNote") : $("note");
+  ov.classList.remove("dim");
+  await anim(note, REDUCED ? [{ opacity: 1 }, { opacity: 0 }] : [
+    { opacity: 1, transform: "translate(0,0) rotate(-1.5deg) scale(1)" },
+    { opacity: 0, transform: "translate(55%, 30px) rotate(16deg) scale(.6)" }
+  ], { duration: 520, easing: "ease-in" });
+  ov.hidden = true;
+  note.getAnimations && note.getAnimations().forEach(a => a.cancel());
+  [...note.children].forEach(k => k.getAnimations && k.getAnimations().forEach(a => a.cancel()));
+}
+
+async function close() {
+  if (state !== "reading") return;
+  state = "busy";
+  await hideNote();
+  $("jar").style.animation = "";
+  state = read >= total() ? "empty" : "idle";
+  if (state === "empty") { await wait(200); showEnd(); }
+}
+
+async function showEnd() {
+  state = "busy";
+  const more = phase === "today" && EXTRA > 0;
+  $("tapText").textContent = more ? "esas fueron las de hoy" : "ya leíste todos";
+  $("endTitle").textContent = more ? "Esas fueron las razones de hoy…" : "Siempre tendré muchas razones para decir que me encantas, pero ninguna más importante que esta razón:";
+  $("endSub").textContent = more ? "pero guardé " + EXTRA + " más" + " para ti, mi bonita." : "Porque te quiero.";
+  $("endNote").classList.toggle("final", !more);
+  $("moreBtn").hidden = !more;
+  $("refill").hidden = more;
+  await showNote($("endNote"));
+  rain();
+  state = "ended";
+}
+
+async function refill() {
+  if (state !== "ended") return;
+  state = "busy";
+  await hideNote();
+  phase = "today";
+  shuffle();
+  buildPile(true);
+  updateCount();
+  $("tapText").textContent = "toca el frasco";
+  $("jar").style.animation = "";
+  await wait(total() * 70 + 700);
+  state = "idle";
+}
+
+// abre las razones guardadas: el frasco se llena con papelitos dorados
+async function openSaved() {
+  if (state !== "ended") return;
+  state = "busy";
+  await hideNote();
+  phase = "extra";
+  shuffle();
+  buildPile(true);
+  updateCount();
+  $("tapText").textContent = "toca el frasco";
+  $("jar").style.animation = "";
+  await wait(total() * 70 + 700);
+  state = "idle";
+}
+
+$("jar").addEventListener("click", draw);
+$("jar").addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); draw(); } });
+$("nextBtn").addEventListener("click", (e) => { e.stopPropagation(); goNext(); });
+$("prevNote").addEventListener("click", (e) => { e.stopPropagation(); goPrev(); });
+// deslizar el papelito: a la izquierda la siguiente, a la derecha la anterior
+let sw = null;
+$("overlay").addEventListener("pointerdown", (e) => { if (state === "reading" && !e.target.closest("button")) sw = { x: e.clientX, y: e.clientY }; });
+$("overlay").addEventListener("pointerup", (e) => {
+  if (!sw) return;
+  const dx = e.clientX - sw.x, dy = e.clientY - sw.y; sw = null;
+  if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) { swiped = true; setTimeout(() => swiped = false, 50); if (dx < 0) goNext(); else goPrev(); }
+});
+let swiped = false;
+$("moreBtn").addEventListener("click", (e) => { e.stopPropagation(); openSaved(); });
+
+// ===== Lista completa =====
+function buildList() {
+  const today = REASONS.slice(1, COUNT).concat(REASONS[0]);
+  const saved = REASONS.slice(COUNT);
+  let h = "<ol>" + today.map((t, i) => "<li><span>" + (i + 1) + "</span><p>" + t + "</p></li>").join("") + "</ol>";
+  if (saved.length) h += "<ol>" + saved.map((t, i) => '<li class="gold"><span>' + (COUNT + i + 1) + "</span><p>" + t + "</p></li>").join("") + "</ol>";
+  $("sheetBody").innerHTML = h;
+}
+async function openList() {
+  buildList();
+  const bg = $("sheetBg");
+  bg.hidden = false;
+  $("sheetBody").scrollTop = 0;
+  anim(bg, [{ opacity: 0 }, { opacity: 1 }], { duration: 300 });
+  await anim($("sheet"), REDUCED ? [{ opacity: 0 }, { opacity: 1 }] : [{ transform: "translateY(100%)" }, { transform: "translateY(0)" }], { duration: 450, easing: "cubic-bezier(.2,.8,.3,1)" });
+  $("sheetClose").focus({ preventScroll: true });
+}
+async function closeList() {
+  const bg = $("sheetBg");
+  if (bg.hidden) return;
+  anim(bg, [{ opacity: 1 }, { opacity: 0 }], { duration: 300 });
+  await anim($("sheet"), REDUCED ? [{ opacity: 1 }, { opacity: 0 }] : [{ transform: "translateY(0)" }, { transform: "translateY(100%)" }], { duration: 320, easing: "ease-in" });
+  bg.hidden = true;
+  [bg, $("sheet")].forEach(el => el.getAnimations && el.getAnimations().forEach(a => a.cancel()));
+}
+$("listBtn").addEventListener("click", (e) => { e.stopPropagation(); openList(); });
+$("sheetClose").addEventListener("click", closeList);
+$("sheetBg").addEventListener("click", (e) => { if (e.target === $("sheetBg")) closeList(); });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeList(); });
+$("refill").addEventListener("click", (e) => { e.stopPropagation(); refill(); });
+$("overlay").addEventListener("click", (e) => { if (!swiped && e.target === $("overlay")) close(); });
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") close();
+  if (e.key === "ArrowRight") goNext();
+  if (e.key === "ArrowLeft") goPrev();
+});
+
+// ===== Corazones al final =====
+const cv = $("fx"), ctx = cv.getContext("2d");
+function size() { cv.width = innerWidth * devicePixelRatio; cv.height = innerHeight * devicePixelRatio; }
+size(); addEventListener("resize", size);
+function heartPath(x, y, s) {
+  ctx.beginPath();
+  ctx.moveTo(x, y + s * 0.3);
+  ctx.bezierCurveTo(x, y, x - s / 2, y, x - s / 2, y + s * 0.3);
+  ctx.bezierCurveTo(x - s / 2, y + s * 0.6, x, y + s * 0.8, x, y + s);
+  ctx.bezierCurveTo(x, y + s * 0.8, x + s / 2, y + s * 0.6, x + s / 2, y + s * 0.3);
+  ctx.bezierCurveTo(x + s / 2, y, x, y, x, y + s * 0.3);
+  ctx.fill();
+}
+function rain() {
+  if (REDUCED) return;
+  const d = devicePixelRatio, colors = ["#e8a0a8", "#c96b7b", "#f3e9e4", "#e48a98"];
+  const ps = Array.from({ length: 60 }, (_, i) => ({ x: Math.random() * cv.width, y: cv.height + Math.random() * cv.height * .5, v: (1.2 + Math.random() * 2.2) * d, s: (9 + Math.random() * 18) * d, w: Math.random() * 6, c: colors[i % 4], a: .45 + Math.random() * .45 }));
+  const t0 = performance.now();
+  (function frame(t) {
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    const fade = Math.max(0, 1 - (t - t0 - 5000) / 2000);
+    ps.forEach(p => { p.y -= p.v; p.w += .03; p.x += Math.sin(p.w) * .8 * d; ctx.globalAlpha = p.a * fade; ctx.fillStyle = p.c; heartPath(p.x, p.y, p.s); });
+    if (fade > 0) requestAnimationFrame(frame); else ctx.clearRect(0, 0, cv.width, cv.height);
+  })(t0);
+}
+
+const MONTHS = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "setiembre", "octubre", "noviembre", "diciembre"];
+$("kicker").textContent = "Hoy es " + DAYS + " de " + MONTHS[new Date().getMonth()] + ", y por eso";
+$("jarTitle").textContent = COUNT === 1 ? "una razón por la que me encantas" : COUNT + " razones por las que me encantas";
+shuffle();
+buildPile(false);
+updateCount();
+</script>
+</body>
+</html>
