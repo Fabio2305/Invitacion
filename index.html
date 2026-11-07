@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Una invitación para mi bonita</title>
+<meta name="description" content="Tengo algo para ti.">
+<!-- color de la barra de Safari igual al fondo de la noche -->
+<meta name="theme-color" content="#17121f">
+<!-- al agregarla a inicio en iPhone: pantalla completa, nombre e ícono propios -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Para ti">
+<link rel="apple-touch-icon" href="icono.png">
+<link rel="icon" type="image/png" href="icono.png">
+<!-- vista previa al mandar el link por WhatsApp o iMessage.
+     Dirección pública de la imagen de vista previa -->
+<meta property="og:title" content="Tengo algo para ti, mi bonita">
+<meta property="og:description" content="Toca el sello para abrir.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://fabio2305.github.io/Invitacion/vista-previa.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+:root { color-scheme: dark; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); background: #17121f; }
+body { margin: 0; font: 14px system-ui, -apple-system, sans-serif; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+html, body { overscroll-behavior: none; }
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;1,9..144,300;1,9..144,400&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300&family=Caveat:wght@500;600&display=swap">
+<style>
+/* Layout: un sobre con sello de cera sobre la misma noche cálida de la declaración; al abrirlo, la invitación ocupa la pantalla. Tema nocturno fijo, a propósito. */
+:root {
+  --night: #17121f;
+  --night-2: #241b30;
+  --muted: #b9a7b4;
+  --rose: #e8a0a8;
+  --rose-deep: #c96b7b;
+  --glow: rgba(232, 160, 168, 0.16);
+  --paper: #f8eeea;
+  --ink: #3b2536;
+  --ink-soft: #7a5e6f;
+  --accent: #b8566a;
+  --env: #efd6d1;
+  --env-2: #e3c1bb;
+  --env-3: #d4aaa3;
+  --liner: #5a2443;
+  --wax: #a63f55;
+  --font-display: "Fraunces", "Georgia", serif;
+  --font-body: "Newsreader", "Georgia", serif;
+  --font-hand: "Caveat", "Segoe Script", cursive;
+  color-scheme: dark;
+}
+html, body { height: 100%; }
+#app { height: 100%; height: 100dvh; }
+body {
+  background: var(--night);
+  color: var(--ink);
+  font-family: var(--font-body);
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.stage {
+  position: relative;
+  box-sizing: border-box;
+  height: 100%;
+  min-height: 520px;
+  container-type: size;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
+  place-items: center;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 24px;
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 45%, var(--glow), transparent 70%),
+    radial-gradient(ellipse 120% 80% at 50% 120%, var(--night-2), transparent 60%),
+    var(--night);
+}
+canvas#fx { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 20; }
+
+/* ---------- Sobre ---------- */
+.scene { grid-area: 1 / 1; display: grid; justify-items: center; gap: clamp(18px, 4cqh, 36px); }
+.envelope {
+  position: relative;
+  width: min(92cqi, 740px, calc((100cqh - 170px) * 1.45));
+  aspect-ratio: 1.45;
+  perspective: 1400px;
+  cursor: pointer;
+  animation: bob 4s ease-in-out infinite;
+}
+@keyframes bob { 0%,100% { transform: translateY(0) rotate(-0.6deg); } 50% { transform: translateY(-8px) rotate(0.6deg); } }
+.env-back {
+  position: absolute; inset: 0; border-radius: 6px; z-index: 0;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(232,160,168,.18) 0 2px, transparent 3px) 0 0 / 22px 22px,
+    linear-gradient(180deg, var(--liner), #3e1630);
+  box-shadow: 0 30px 60px rgba(0,0,0,.5);
+}
+.letter {
+  position: absolute; left: 6%; right: 6%; top: 7%; height: 86%; z-index: 2;
+  box-sizing: border-box;
+  border-radius: 4px;
+  background:
+    radial-gradient(ellipse at 70% 20%, rgba(255,255,255,0.6), transparent 60%),
+    var(--paper);
+  box-shadow: 0 -2px 10px rgba(0,0,0,.15);
+  display: grid; justify-items: center; align-content: start; padding-top: 8%;
+  gap: 2%;
+}
+.letter .to { font-family: var(--font-hand); font-weight: 600; color: var(--accent); font-size: clamp(1.6rem, 6cqi, 3rem); line-height: 1; }
+.letter svg { width: 9%; fill: var(--accent); }
+.pocket {
+  position: absolute; inset: 0; z-index: 3; border-radius: 6px;
+  clip-path: polygon(0 0, 50% 54%, 100% 0, 100% 100%, 0 100%);
+  -webkit-clip-path: polygon(0 0, 50% 54%, 100% 0, 100% 100%, 0 100%);
+  background:
+    linear-gradient(to top right, var(--env-2) 0 49.6%, transparent 50%) left bottom / 50.2% 100% no-repeat,
+    linear-gradient(to top left, var(--env-2) 0 49.6%, transparent 50%) right bottom / 50.2% 100% no-repeat,
+    linear-gradient(180deg, var(--env), var(--env-2));
+}
+.pocket::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 9%; text-align: center;
+}
+.flap {
+  position: absolute; left: 0; right: 0; top: 0; height: 58%; z-index: 4;
+  transform-origin: 50% 0;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  -webkit-clip-path: polygon(0 0, 100% 0, 50% 100%);
+  background: linear-gradient(180deg, var(--env-3), var(--env) 85%);
+}
+.seal {
+  position: absolute; z-index: 5; left: 50%; top: 58%;
+  width: 17%; aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border: 0; padding: 0; border-radius: 50%; cursor: pointer;
+  background: radial-gradient(circle at 35% 30%, #d0697f, var(--wax) 55%, #6e2234);
+  box-shadow: 0 0 0 5px rgba(166,63,85,.25), 0 8px 18px rgba(0,0,0,.4), inset 0 -3px 6px rgba(0,0,0,.25);
+  display: grid; place-items: center;
+}
+.seal::before {
+  content: ""; position: absolute; inset: 12%; border-radius: 50%;
+  border: 1.5px dashed rgba(255,230,230,.35);
+}
+.seal svg { width: 40%; fill: #fbe4e6; opacity: .9; }
+.seal:focus-visible { outline: 2px solid var(--rose); outline-offset: 6px; }
+.seal-pulse { animation: sealpulse 2.4s ease-in-out infinite; }
+@keyframes sealpulse { 0%,100% { box-shadow: 0 0 0 5px rgba(166,63,85,.25), 0 8px 18px rgba(0,0,0,.4), inset 0 -3px 6px rgba(0,0,0,.25); } 50% { box-shadow: 0 0 0 14px rgba(166,63,85,0), 0 8px 18px rgba(0,0,0,.4), inset 0 -3px 6px rgba(0,0,0,.25); } }
+
+.tap-hint { display: grid; justify-items: center; gap: .3rem; text-align: center; }
+.tap-hint .k { font-size: clamp(.75rem, .5rem + 1cqi, 1rem); letter-spacing: .3em; text-transform: uppercase; color: var(--muted); }
+.tap-hint .h { font-family: var(--font-hand); font-size: clamp(1.6rem, 1rem + 3cqi, 2.6rem); color: var(--rose); line-height: 1.05; }
+.tap-hint .t { font-size: clamp(.72rem, .5rem + .8cqi, .9rem); letter-spacing: .22em; text-transform: uppercase; color: var(--muted); opacity: .7; animation: breathe 2.4s ease-in-out infinite; }
+@keyframes breathe { 0%,100% { opacity: .35; } 50% { opacity: .85; } }
+
+/* ---------- Invitación ---------- */
+.card {
+  grid-area: 1 / 1;
+  position: relative;
+  box-sizing: border-box;
+  width: min(100%, 720px);
+  max-height: 100%;
+  overflow: hidden;
+  border-radius: 8px;
+  padding: calc(clamp(30px, 6cqh, 76px) * var(--fit, 1)) clamp(24px, 7cqi, 64px);
+  background:
+    radial-gradient(ellipse at 70% 15%, rgba(255,255,255,0.65), transparent 60%),
+    var(--paper);
+  box-shadow: 0 30px 60px rgba(0,0,0,.5);
+  visibility: hidden;
+  display: grid; justify-items: center; text-align: center;
+  gap: calc(clamp(1rem, 2.4cqh, 2rem) * var(--fit, 1));
+}
+.card.show { visibility: visible; }
+.card::before {
+  content: ""; position: absolute; inset: 12px; border: 1px solid rgba(184,86,106,.28); border-radius: 4px; pointer-events: none;
+}
+.card > * { position: relative; }
+.intro { margin: 0; max-width: 32rem; font-family: var(--font-display); font-weight: 300; font-style: italic; font-size: calc(clamp(1.02rem, .6rem + 2cqi, 1.6rem) * var(--fit, 1)); line-height: 1.6; color: var(--ink-soft); text-wrap: pretty; }
+.kicker { font-size: calc(clamp(.72rem, .5rem + 1.2cqi, 1.2rem) * var(--fit, 1)); letter-spacing: .3em; text-transform: uppercase; color: var(--ink-soft); }
+.title { margin: 0; font-family: var(--font-hand); font-weight: 600; color: var(--accent); font-size: calc(clamp(2.6rem, 1.2rem + 8cqi, 6rem) * var(--fit, 1)); line-height: 1; padding: 0 .2em; }
+.orn { width: calc(clamp(110px, 32cqi, 240px) * var(--fit, 1)); color: var(--accent); }
+.orn path { fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; }
+.orn .fillh { fill: currentColor; stroke: none; }
+.msg { display: grid; gap: calc(.8rem * var(--fit, 1)); max-width: 34rem; }
+.msg p { margin: 0; font-size: calc(clamp(1.05rem, .55rem + 2.4cqi, 1.85rem) * var(--fit, 1)); line-height: 1.6; color: var(--ink); text-wrap: pretty; }
+.msg p em { font-style: italic; color: var(--accent); }
+.details {
+  margin: 0; width: 100%; max-width: 28rem;
+  display: grid; gap: calc(.55rem * var(--fit, 1));
+  padding-block: calc(.9rem * var(--fit, 1));
+  border-block: 1px solid rgba(184,86,106,.25);
+}
+.row { display: grid; grid-template-columns: 1.8em 5.6em 1fr; font-size: calc(clamp(1rem, .7rem + 1.2cqi, 1.3rem) * var(--fit, 1)); align-items: center; gap: .6rem; text-align: left; }
+.row svg { width: 1.35em; height: 1.35em; fill: none; stroke: var(--accent); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.row dt { font-size: .72em; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-soft); }
+.row dd { margin: 0; font-family: var(--font-display); font-style: italic; font-size: 1.15em; color: var(--ink); min-width: 0; }
+.ask { margin: 0; font-family: var(--font-display); font-weight: 300; font-style: italic; font-size: calc(clamp(1.6rem, .9rem + 4cqi, 3rem) * var(--fit, 1)); color: var(--ink); line-height: 1.15; text-wrap: balance; }
+.choices { display: flex; flex-wrap: wrap; gap: .8rem; justify-content: center; }
+.choice {
+  font-family: var(--font-display); font-size: calc(clamp(1.1rem, .8rem + 1.2cqi, 1.45rem) * var(--fit, 1));
+  padding: .65em 1.6em; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--accent); background: transparent; color: var(--ink);
+  transition: transform 200ms ease, background 250ms ease, color 250ms ease;
+}
+.choice.main { background: var(--accent); color: #fff7f5; box-shadow: 0 8px 22px rgba(168,72,90,.3); }
+.choice:hover, .choice:focus-visible { transform: translateY(-2px); }
+.choice:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
+
+.done { display: grid; justify-items: center; gap: calc(.7rem * var(--fit, 1)); }
+/* Boleto de la cita */
+.ticket {
+  position: relative; width: min(100%, 30rem); display: grid; grid-template-columns: 1fr auto;
+  font-size: calc(clamp(.92rem, .45rem + 2cqi, 1.45rem) * var(--fit, 1));
+  background: linear-gradient(135deg, #fff9f6, #f6e6e0);
+  border: 1px solid rgba(184,86,106,.35); border-radius: 12px;
+  box-shadow: 0 10px 24px rgba(59,37,54,.18);
+  text-align: left;
+  -webkit-mask: radial-gradient(circle at calc(100% - 4.2em) 0, transparent .6em, #000 .62em) top / 100% 51% no-repeat, radial-gradient(circle at calc(100% - 4.2em) 100%, transparent .6em, #000 .62em) bottom / 100% 51% no-repeat;
+  mask: radial-gradient(circle at calc(100% - 4.2em) 0, transparent .6em, #000 .62em) top / 100% 51% no-repeat, radial-gradient(circle at calc(100% - 4.2em) 100%, transparent .6em, #000 .62em) bottom / 100% 51% no-repeat;
+}
+.t-main { display: grid; gap: .25em; padding: 1em 1.1em 1em 1.3em; min-width: 0; }
+.t-k { font-size: .7em; letter-spacing: .28em; text-transform: uppercase; color: var(--ink-soft); }
+.t-big { font-family: var(--font-hand); font-weight: 600; font-size: 2.3em; line-height: .95; color: var(--accent); }
+.t-rows { margin: .35em 0 .2em; display: grid; grid-template-columns: auto 1fr; gap: .15em .7em; }
+.t-rows dt { font-size: .66em; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-soft); align-self: center; }
+.t-rows dd { margin: 0; font-family: var(--font-display); font-style: italic; color: var(--ink); }
+.t-admit { font-size: .8em; color: var(--ink-soft); }
+.t-admit b { font-family: var(--font-hand); font-size: 1.5em; font-weight: 600; color: var(--accent); }
+.t-stub { width: 4.2em; border-left: 2px dashed rgba(184,86,106,.4); display: grid; place-items: center; align-content: center; gap: .6em; padding: .8em 0; }
+.t-stub span { writing-mode: vertical-rl; transform: rotate(180deg); font-size: .68em; letter-spacing: .25em; text-transform: uppercase; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.t-stub svg { width: 1.3em; fill: var(--accent); }
+.done .big { font-family: var(--font-hand); font-weight: 600; color: var(--accent); font-size: calc(clamp(2.8rem, 1.2rem + 9cqi, 6.4rem) * var(--fit, 1)); line-height: 1.1; padding: 0 .3em; }
+.done p { margin: 0; font-size: calc(clamp(1.1rem, .6rem + 2.4cqi, 1.8rem) * var(--fit, 1)); color: var(--ink); }
+.again {
+  margin-top: .4rem; width: 48px; height: 48px; padding: 0; border-radius: 50%;
+  display: grid; place-items: center; cursor: pointer;
+  background: transparent; border: 1px solid var(--accent); color: var(--accent);
+  transition: background 300ms ease, color 300ms ease, transform 400ms ease;
+}
+.again svg { width: 22px; height: 22px; fill: currentColor; }
+.again:hover { background: var(--accent); color: #fff7f5; transform: rotate(-45deg); }
+.again:focus-visible { outline: 1px solid var(--accent); outline-offset: 3px; }
+
+/* elementos que entran en secuencia */
+.seq { opacity: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .envelope, .seal-pulse, .tap-hint .t { animation: none !important; }
+}
+</style>
+
+</head>
+<body>
+<div id="app">
+<main class="stage" id="stage">
+  <canvas id="fx"></canvas>
+
+  <div class="scene" id="scene">
+    <div class="envelope" id="envelope">
+      <div class="env-back"></div>
+      <div class="letter" id="letter">
+        <div class="to">Para ti</div>
+        <svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 5 6.4 5c2 0 3.4 1.1 4.1 2.3h3c.7-1.2 2.1-2.3 4.1-2.3C21 5 23.1 8.4 21.6 11.8 19.5 16.4 12 21 12 21z"/></svg>
+      </div>
+      <div class="pocket"></div>
+      <div class="flap" id="flap"></div>
+      <button class="seal seal-pulse" id="seal" type="button" aria-label="Abrir la invitación">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 5 6.4 5c2 0 3.4 1.1 4.1 2.3h3c.7-1.2 2.1-2.3 4.1-2.3C21 5 23.1 8.4 21.6 11.8 19.5 16.4 12 21 12 21z"/></svg>
+      </button>
+    </div>
+    <div class="tap-hint" id="tapHint">
+      <span class="k">Tengo algo para ti,</span>
+      <span class="h">mi bonita</span>
+      <span class="t">Toca el sello para abrir</span>
+    </div>
+  </div>
+
+  <article class="card" id="card" aria-live="polite">
+    <p class="intro seq" id="intro"></p>
+    <div class="kicker seq">Una invitación para</div>
+    <h1 class="title seq" id="cardTitle">mi bonita</h1>
+    <svg class="orn seq" viewBox="0 0 160 20" aria-hidden="true">
+      <path d="M4 10 C30 10 44 4 66 10"/><path d="M156 10 C130 10 116 4 94 10"/>
+      <path class="fillh" d="M80 16 C76 13 70 11 70 7 C70 4.5 72 3 74 3 C76 3 77.5 4 80 6.5 C82.5 4 84 3 86 3 C88 3 90 4.5 90 7 C90 11 84 13 80 16 Z"/>
+    </svg>
+
+    <div class="invite" id="invite">
+      <div class="msg" id="msg"></div>
+    </div>
+
+    <dl class="details seq" id="details"></dl>
+
+    <div class="invite-ask" id="askBlock" style="display:grid;gap:1rem;justify-items:center">
+      <p class="ask seq" id="ask"></p>
+      <div class="choices seq" id="choices">
+        <button class="choice main" type="button" data-yes>Sí, acepto</button>
+        <button class="choice" type="button" data-yes>Obvio que sí</button>
+      </div>
+    </div>
+
+    <div class="done" id="done" hidden>
+      <div class="ticket" id="ticket">
+        <div class="t-main">
+          <span class="t-k">Entrada para</span>
+          <span class="t-big">una cita</span>
+          <dl class="t-rows" id="ticketRows"></dl>
+          <span class="t-admit">Admite a: <b>mi bonita</b></span>
+        </div>
+        <div class="t-stub" aria-hidden="true">
+          <span>N.º 001</span>
+          <svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 5 6.4 5c2 0 3.4 1.1 4.1 2.3h3c.7-1.2 2.1-2.3 4.1-2.3C21 5 23.1 8.4 21.6 11.8 19.5 16.4 12 21 12 21z"/></svg>
+        </div>
+      </div>
+      <div class="big" id="doneTitle"></div>
+      <p id="doneText"></p>
+      <button class="again" id="again" type="button" aria-label="Ver la invitación otra vez" title="Ver otra vez">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5V2L7.5 6.5 12 11V7.5a5.5 5.5 0 1 1-5.5 5.5H4a8 8 0 1 0 8-8z"/></svg>
+      </button>
+    </div>
+  </article>
+</main>
+</div>
+
+<script>
+// ===== Contenido de la invitación (edita aquí) =====
+const INVITE = {
+  intro: "Cada historia de amor tiene un inicio que debe ser inolvidable. La nuestra ya empezó hace mucho tiempo, pero quiero escribir en ella un capítulo súper importante. Por eso…",
+  lines: [
+    "Tengo un plan bonito, pero le falta lo más importante: <em>tú</em>.",
+    "¿Me regalas un día para salir juntitos?"
+  ],
+  details: [
+    { icon: "cal",   label: "Día",   value: "14 de noviembre" },
+    { icon: "clock", label: "Hora",  value: "Al mediodía" },
+    { icon: "pin",   label: "Lugar", value: "Es sorpresa" }
+  ],
+  ask: "¿Aceptas?",
+  doneTitle: "¡Es una cita!",
+  doneText: "Te espero, mi bonita."
+};
+
+const ICONS = {
+  cal: '<rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
+  clock: '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+  pin: '<path d="M12 21s-6.5-6.2-6.5-11a6.5 6.5 0 0 1 13 0c0 4.8-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/>'
+};
+
+const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const $ = (id) => document.getElementById(id);
+const msg = $("msg"), details = $("details"), card = $("card");
+
+INVITE.lines.forEach(t => { const p = document.createElement("p"); p.className = "seq"; p.innerHTML = t; msg.appendChild(p); });
+INVITE.details.forEach(d => {
+  const row = document.createElement("div");
+  row.className = "row";
+  row.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true">' + ICONS[d.icon] + '</svg><dt>' + d.label + '</dt><dd>' + d.value + '</dd>';
+  details.appendChild(row);
+});
+$("intro").textContent = INVITE.intro;
+$("ask").textContent = INVITE.ask;
+$("ticketRows").innerHTML = INVITE.details.map(d => "<dt>" + d.label + "</dt><dd>" + d.value + "</dd>").join("");
+$("doneTitle").textContent = INVITE.doneTitle;
+$("doneText").textContent = INVITE.doneText;
+
+// Si la pantalla es pequeña, reduce un poco la letra de la tarjeta para que todo quepa.
+function fitCard() {
+  let f = 1;
+  card.style.setProperty("--fit", f);
+  while (card.scrollHeight > card.clientHeight + 1 && f > 0.66) {
+    f -= 0.04;
+    card.style.setProperty("--fit", f.toFixed(2));
+  }
+}
+addEventListener("resize", fitCard);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitCard);
+fitCard();
+
+// Animaciones con la Web Animations API (funcionan igual en Safari de iPad).
+function anim(el, frames, opts) {
+  if (!el.animate) { const last = frames[frames.length - 1]; Object.assign(el.style, last); return Promise.resolve(); }
+  const a = el.animate(frames, Object.assign({ fill: "forwards", easing: "cubic-bezier(.25,.6,.3,1)" }, opts));
+  return a.finished.catch(() => {});
+}
+const wait = (ms) => new Promise(r => setTimeout(r, ms));
+const rise = (y) => REDUCED ? [{ opacity: 0 }, { opacity: 1 }] : [{ opacity: 0, transform: "translateY(" + y + "px)" }, { opacity: 1, transform: "translateY(0)" }];
+
+let state = "closed";
+async function openInvite() {
+  if (state !== "closed") return;
+  state = "opening";
+  const env = $("envelope"), seal = $("seal"), flap = $("flap"), letter = $("letter");
+  seal.classList.remove("seal-pulse");
+  env.style.animation = "none";
+  anim($("tapHint"), [{ opacity: 1 }, { opacity: 0 }], { duration: 400 });
+  // el sello se rompe
+  await anim(seal, [
+    { transform: "translate(-50%,-50%) scale(1) rotate(0)", opacity: 1 },
+    { transform: "translate(-50%,-50%) scale(1.15) rotate(-8deg)", opacity: 1, offset: .35 },
+    { transform: "translate(-50%,-50%) scale(.4) rotate(20deg)", opacity: 0 }
+  ], { duration: REDUCED ? 300 : 650 });
+  // la solapa se abre
+  await anim(flap, [{ transform: "rotateX(0deg)" }, { transform: "rotateX(180deg)" }], { duration: REDUCED ? 300 : 800, easing: "cubic-bezier(.645,.045,.355,1)" });
+  flap.style.zIndex = 1;
+  // la carta sale del sobre
+  await anim(letter, [{ transform: "translateY(0)" }, { transform: "translateY(-48%)" }], { duration: REDUCED ? 300 : 1000, easing: "cubic-bezier(.3,.7,.3,1)" });
+  await wait(250);
+  // el sobre se va y la invitación aparece
+  anim($("scene"), [{ opacity: 1, transform: "translateY(0)" }, { opacity: 0, transform: REDUCED ? "none" : "translateY(14%)" }], { duration: 800, easing: "ease-in" });
+  fitCard();
+  card.classList.add("show");
+  await anim(card, REDUCED ? [{ opacity: 0 }, { opacity: 1 }] : [{ opacity: 0, transform: "translateY(60px) scale(.88)" }, { opacity: 1, transform: "translateY(0) scale(1)" }], { duration: 1000 });
+  $("scene").style.visibility = "hidden";
+  // el contenido entra pieza por pieza
+  const seq = [...card.querySelectorAll(".seq")];
+  for (const el of seq) {
+    anim(el, rise(12), { duration: 1100 });
+    await wait(el.id === "intro" ? 3200 : el.tagName === "P" && el.parentElement === msg ? 1300 : 450);
+  }
+  state = "open";
+}
+
+async function accept(btn) {
+  if (state !== "open") return;
+  state = "accepted";
+  const r = btn.getBoundingClientRect();
+  confettiBurst(r.left + r.width / 2, r.top + r.height / 2);
+  const outgoing = [$("intro"), $("invite"), $("askBlock"), $("details")];
+  await Promise.all(outgoing.map(el => anim(el, [{ opacity: 1 }, { opacity: 0 }], { duration: 450 })));
+  outgoing.forEach(el => el.hidden = true);
+  $("done").hidden = false;
+  fitCard();
+  $("cardTitle").textContent = "mi bonita";
+  const parts = [$("doneTitle"), $("doneText"), $("again")];
+  parts.forEach(el => el.style.opacity = 0);
+  // el boleto se imprime de arriba hacia abajo
+  const tk = $("ticket");
+  await anim(tk, REDUCED ? [{ opacity: 0 }, { opacity: 1 }] : [
+    { clipPath: "inset(0 0 100% 0)", transform: "translateY(-18px)" },
+    { clipPath: "inset(0 0 0% 0)", transform: "translateY(0)" }
+  ], { duration: 1300, easing: "cubic-bezier(.4,.1,.3,1)" });
+  if (!REDUCED) anim(tk, [{ transform: "rotate(0)" }, { transform: "rotate(-2.5deg)" }, { transform: "rotate(-1.5deg)" }], { duration: 500, easing: "ease-out" });
+  confettiRain();
+  for (const el of parts) { anim(el, REDUCED ? [{ opacity: 0 }, { opacity: 1 }] : [{ opacity: 0, transform: "translateY(10px)" }, { opacity: 1, transform: "none" }], { duration: 800 }); await wait(450); }
+}
+
+function reset() {
+  document.getAnimations && document.getAnimations().forEach(a => a.cancel());
+  state = "closed";
+  card.classList.remove("show");
+  $("scene").style.visibility = "";
+  $("flap").style.zIndex = "";
+  $("envelope").style.animation = "";
+  $("seal").classList.add("seal-pulse");
+  [$("intro"), $("invite"), $("askBlock"), $("details")].forEach(el => el.hidden = false);
+  $("done").hidden = true;
+  [$("doneTitle"), $("doneText"), $("again")].forEach(el => el.style.opacity = "");
+  fitCard();
+}
+
+$("seal").addEventListener("click", (e) => { e.stopPropagation(); openInvite(); });
+$("envelope").addEventListener("click", openInvite);
+document.querySelectorAll("[data-yes]").forEach(b => b.addEventListener("click", () => accept(b)));
+$("again").addEventListener("click", reset);
+
+// ===== Confeti de papel (propio de la invitación) =====
+const CONF = ["#e8a0a8", "#c96b7b", "#f3d6a0", "#d9b26a", "#fbeee9", "#a63f55"];
+let conf = [], confRun = false;
+function confLoop() {
+  ctx.clearRect(0, 0, cv.width, cv.height);
+  conf = conf.filter(c => c.life > 0 && c.y < cv.height + 40);
+  conf.forEach(c => {
+    c.vy += c.g; c.vx *= .99; c.vy = Math.min(c.vy, c.max);
+    c.x += c.vx + Math.sin(c.t) * c.sway; c.y += c.vy; c.t += c.ts; c.rot += c.vr; c.life--;
+    const flip = Math.cos(c.t * 1.7);
+    ctx.save(); ctx.translate(c.x, c.y); ctx.rotate(c.rot); ctx.scale(1, flip);
+    ctx.globalAlpha = Math.min(1, c.life / 30); ctx.fillStyle = c.c;
+    if (c.curl) { ctx.beginPath(); ctx.arc(0, 0, c.w * .6, 0, Math.PI * 1.3); ctx.lineWidth = c.h * .7; ctx.strokeStyle = c.c; ctx.stroke(); }
+    else ctx.fillRect(-c.w / 2, -c.h / 2, c.w, c.h);
+    ctx.restore();
+  });
+  if (conf.length) requestAnimationFrame(confLoop); else { confRun = false; ctx.clearRect(0, 0, cv.width, cv.height); }
+}
+function confStart() { if (!confRun) { confRun = true; requestAnimationFrame(confLoop); } }
+function piece(x, y, vx, vy, d) {
+  return { x, y, vx, vy, g: .12 * d, max: (2.4 + Math.random() * 1.6) * d, sway: (.4 + Math.random() * .8) * d, t: Math.random() * 6, ts: .05 + Math.random() * .08, rot: Math.random() * 6, vr: (Math.random() - .5) * .2, w: (7 + Math.random() * 8) * d, h: (3 + Math.random() * 4) * d, c: CONF[(Math.random() * CONF.length) | 0], curl: Math.random() < .18, life: 420 + Math.random() * 120 };
+}
+function confettiBurst(x, y) {
+  if (REDUCED) return;
+  const d = devicePixelRatio;
+  for (let i = 0; i < 70; i++) { const a = -Math.PI / 2 + (Math.random() - .5) * 2.2, sp = (5 + Math.random() * 9) * d; conf.push(piece(x * d, y * d, Math.cos(a) * sp, Math.sin(a) * sp, d)); }
+  confStart();
+}
+function confettiRain() {
+  if (REDUCED) return;
+  const d = devicePixelRatio;
+  for (let i = 0; i < 110; i++) conf.push(piece(Math.random() * cv.width, -Math.random() * cv.height * .6, (Math.random() - .5) * 1.5 * d, Math.random() * 2 * d, d));
+  confStart();
+}
+
+// ===== Corazones =====
+const cv = $("fx"), ctx = cv.getContext("2d");
+function size() { cv.width = innerWidth * devicePixelRatio; cv.height = innerHeight * devicePixelRatio; }
+size(); addEventListener("resize", size);
+function heartPath(x, y, s) {
+  ctx.beginPath();
+  ctx.moveTo(x, y + s * 0.3);
+  ctx.bezierCurveTo(x, y, x - s / 2, y, x - s / 2, y + s * 0.3);
+  ctx.bezierCurveTo(x - s / 2, y + s * 0.6, x, y + s * 0.8, x, y + s);
+  ctx.bezierCurveTo(x, y + s * 0.8, x + s / 2, y + s * 0.6, x + s / 2, y + s * 0.3);
+  ctx.bezierCurveTo(x + s / 2, y, x, y, x, y + s * 0.3);
+  ctx.fill();
+}
+const COLORS = ["#e8a0a8", "#c96b7b", "#f3e9e4", "#e48a98"];
+let parts = [], running = false;
+function loop() {
+  ctx.clearRect(0, 0, cv.width, cv.height);
+  parts = parts.filter(p => p.life > 0);
+  parts.forEach(p => {
+    p.vy += p.g; p.x += p.vx; p.y += p.vy; p.w += 0.04; p.x += Math.sin(p.w) * p.sw; p.life -= 1;
+    ctx.globalAlpha = Math.min(1, p.life / 40) * p.a; ctx.fillStyle = p.c; heartPath(p.x, p.y, p.s);
+  });
+  if (parts.length) requestAnimationFrame(loop); else { running = false; ctx.clearRect(0, 0, cv.width, cv.height); }
+}
+function start() { if (!running) { running = true; requestAnimationFrame(loop); } }
+function burst(x, y) {
+  if (REDUCED) return;
+  const d = devicePixelRatio;
+  for (let i = 0; i < 46; i++) {
+    const ang = Math.random() * Math.PI * 2, sp = (3 + Math.random() * 7) * d;
+    parts.push({ x: x * d, y: y * d, vx: Math.cos(ang) * sp, vy: Math.sin(ang) * sp - 4 * d, g: 0.22 * d, s: (8 + Math.random() * 16) * d, w: 0, sw: 0, a: .9, c: COLORS[i % 4], life: 90 + Math.random() * 40 });
+  }
+  start();
+}
+function rain() {
+  if (REDUCED) return;
+  const d = devicePixelRatio;
+  for (let i = 0; i < 60; i++) {
+    parts.push({ x: Math.random() * cv.width, y: cv.height + Math.random() * cv.height * .5, vx: 0, vy: -(1.2 + Math.random() * 2.2) * d, g: 0, s: (9 + Math.random() * 18) * d, w: Math.random() * 6, sw: .7 * d, a: .45 + Math.random() * .45, c: COLORS[i % 4], life: 320 + Math.random() * 120 });
+  }
+  start();
+}
+</script>
+
+</body>
+</html>
