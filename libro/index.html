@@ -497,7 +497,8 @@ function washURL(k) {
   const x = c.getContext("2d");
   for (let b = 0; b < 5; b++) {
     const col = WASH_COLORS[(k + b) % WASH_COLORS.length];
-    const cx = 70 + r() * 120, cy = 70 + r() * 120, rad = 60 + r() * 60;
+    // manchas cerca del centro, para que nunca toquen el borde del lienzo
+    const cx = 105 + r() * 50, cy = 105 + r() * 50, rad = 42 + r() * 30;
     for (let s = 0; s < 14; s++) {
       const g = x.createRadialGradient(cx + (r() - .5) * 30, cy + (r() - .5) * 30, 0, cx, cy, rad * (.6 + r() * .5));
       g.addColorStop(0, "rgba(" + col + ",.07)");
@@ -506,6 +507,12 @@ function washURL(k) {
       x.fillStyle = g; x.beginPath(); x.arc(cx, cy, rad * 1.1, 0, Math.PI * 2); x.fill();
     }
   }
+  // borde suave: todo se desvanece en círculo antes de llegar al borde (sin cortes rectos)
+  x.globalCompositeOperation = "destination-in";
+  const m = x.createRadialGradient(130, 130, 0, 130, 130, 128);
+  m.addColorStop(0, "rgba(0,0,0,1)"); m.addColorStop(.55, "rgba(0,0,0,.85)"); m.addColorStop(1, "rgba(0,0,0,0)");
+  x.fillStyle = m; x.fillRect(0, 0, 260, 260);
+  x.globalCompositeOperation = "source-over";
   return (washCache[k] = c.toDataURL());
 }
 
