@@ -389,7 +389,8 @@ const wait = (ms) => new Promise(r => setTimeout(r, ms));
 // Número de papelitos: el día del mes en que ella abre el frasco (el 14 hay 14, el 18 hay 18)
 // Modo de prueba: abre el link con #dia-14 al final para ver el frasco como si fuera el 14 de este mes.
 const TEST_DAY = (location.hash.match(/^#dia-(\d{1,2})$/) || [])[1];
-const DAYS = TEST_DAY ? Math.min(31, Math.max(1, +TEST_DAY)) : new Date().getDate();
+// Recuerdo: el frasco queda como fue el 14 de noviembre de 2026 (14 papelitos del día)
+const DAYS = TEST_DAY ? Math.min(31, Math.max(1, +TEST_DAY)) : 14;
 // se usan las primeras razones de la lista (pon tus favoritas arriba); si hay menos razones que días, se usan todas
 const COUNT = Math.min(REASONS.length, DAYS);
 
@@ -684,7 +685,7 @@ function rain() {
 }
 
 const MONTHS = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "setiembre", "octubre", "noviembre", "diciembre"];
-$("kicker").textContent = "Hoy es " + DAYS + " de " + MONTHS[new Date().getMonth()] + ", y por eso";
+$("kicker").textContent = DAYS + " de noviembre, y por eso";
 $("jarTitle").textContent = COUNT === 1 ? "una razón por la que me encantas" : COUNT + " razones por las que me encantas";
 shuffle();
 buildPile(false);

@@ -1020,10 +1020,9 @@ function wireSheetControls() {
   if (noCount) setNoGame(noCount);
 }
 
+// Recuerdo: el sello siempre muestra el día de la declaración
 function dateParts() {
-  const d = new Date();
-  const m = ["ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"][d.getMonth()];
-  return { day: d.getDate(), month: m, year: d.getFullYear() };
+  return { day: 14, month: "NOV", year: 2026 };
 }
 function stampSVG() {
   const { day, month, year } = dateParts();
